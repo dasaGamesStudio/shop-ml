@@ -9,7 +9,8 @@ class UserItemTile extends StatelessWidget {
   final String itemName;
   const UserItemTile({
     Key? key,
-    required this.itemName
+    required this.itemName,
+
   }) : super(key: key);
 
   @override
@@ -71,8 +72,11 @@ class UserItemTile extends StatelessWidget {
 class ProductItemTile extends StatelessWidget {
 
   late Item item;
+  final Function? onAddCart;
 
-  ProductItemTile({Key? key, required this.item}) : super(key: key);
+  ProductItemTile({Key? key, required this.item,
+    this.onAddCart,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +102,8 @@ class ProductItemTile extends StatelessWidget {
                     children: [
                       SlidableAction(
                         onPressed: ((context){
-                          //delete
+                          //add item to list
+                          onAddCart!();
                         }),
                         backgroundColor: Colors.green,
                         icon: CupertinoIcons.shopping_cart,
