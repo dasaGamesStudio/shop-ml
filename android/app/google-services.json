@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "619455330036",
+    "project_id": "shopml-ap",
+    "storage_bucket": "shopml-ap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619455330036:android:05e8f1e18e7c40a86050a1",
+        "android_client_info": {
+          "package_name": "com.example.markethelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "619455330036-373miuu9c6glv6rusdrvn6c9nl7r2e9d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.markethelper",
+            "certificate_hash": "d9b86fb86c0e8050a4ac5a78e3aaaf05ec2377e8"
+          }
+        },
+        {
+          "client_id": "619455330036-le025j1f5vf69tdtafsetcidgico5uh9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDebdVg9jyt_Z9imrgP1OpFK0RBefYEqGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "619455330036-le025j1f5vf69tdtafsetcidgico5uh9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "619455330036-ffh7h0tjskigq7aqlkcfn7hr917jriuh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.markethelper"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
