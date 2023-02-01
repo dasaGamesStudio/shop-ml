@@ -6,7 +6,7 @@ import 'package:markethelper/pages/search_page.dart';
 
 import 'loginpage.dart';
 
-
+//
 class AuthPage extends StatelessWidget {
   const AuthPage({Key? key}) : super(key: key);
 
