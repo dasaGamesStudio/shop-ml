@@ -23,8 +23,6 @@ class AutocompleteWidget extends StatelessWidget {
     double fontSize = refLength * 0.04;
     double borderRadius = refLength * 0.02;
 
-    print(this.itemList.length);
-
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),

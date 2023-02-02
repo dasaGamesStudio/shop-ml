@@ -8,6 +8,7 @@ import 'package:markethelper/components/autocomplete.dart';
 import 'package:markethelper/components/shoplistcard.dart';
 import 'package:markethelper/models/cart_item_model.dart';
 import 'package:markethelper/models/item_model.dart';
+import 'package:markethelper/pages/take_shelf_image.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -89,7 +90,8 @@ class _CartPageState extends State<CartPage> {
       floatingActionButton: FloatingActionButton(
         tooltip: "Show Best Route",
         onPressed: () {
-          // go to map view
+          // go to camera view
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const TakeShelfImage()));
         },
         child: Icon(
           Icons.my_location,
@@ -101,31 +103,6 @@ class _CartPageState extends State<CartPage> {
         padding: EdgeInsets.all(paddingVal * 0.8),
         child: Column(
           children: [
-            // SizedBox(
-            //   width: scSize.width,
-            //   height: refLength * 0.16,
-            //   child: ElevatedButton(onPressed: () {},
-            //       style: ButtonStyle(
-            //         backgroundColor: MaterialStateProperty.all(Colors.grey[100]),
-            //         padding: MaterialStateProperty.all(EdgeInsets.zero),
-            //         shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(borderRadius),
-            //           side: BorderSide(
-            //
-            //           )
-            //         ))
-            //       ),
-            //       child: Padding(
-            //         padding: EdgeInsets.symmetric(horizontal: paddingVal),
-            //         child: Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Text("Search Products", style: GoogleFonts.itim(fontSize: fontSize * 1.5, fontWeight: FontWeight.bold, color: Colors.grey[500]),),
-            //             Icon(CupertinoIcons.add, size: fontSize * 2,)
-            //           ],
-            //         ),
-            //       )),
-            // ),
             AutocompleteWidget(itemList: itemsInDb, addToCart: addToCart,),
             SizedBox(
               height: paddingVal * 1.5,

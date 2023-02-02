@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  final User user = FirebaseAuth.instance.currentUser?.uid as User;
+  // final User? user = FirebaseAuth.instance.currentUser?.uid as User;
 
   SignInWithGoogle() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
