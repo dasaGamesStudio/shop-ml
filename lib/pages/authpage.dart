@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:markethelper/pages/cart_list_page.dart';
 import 'package:markethelper/pages/search_page.dart';
 import 'package:markethelper/pages/showmap_page.dart';
+import 'package:markethelper/services/authservice.dart';
 
 import 'loginpage.dart';
 
@@ -19,6 +20,7 @@ class AuthPage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context,snapshot){
           if(snapshot.hasData){
+            AuthService().getCurrentUser();
             return CartPage();
           }else{
             return LoginPage();

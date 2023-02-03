@@ -4,12 +4,16 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:markethelper/models/item_model.dart';
 
+import '../models/cart_item_model.dart';
+
 
 class UserItemTile extends StatelessWidget {
-  final String itemName;
+  final CartItem cartItem;
+  final Function()? onDeleting;
   const UserItemTile({
     Key? key,
-    required this.itemName,
+    required this.cartItem,
+    required this.onDeleting,
 
   }) : super(key: key);
 
@@ -32,30 +36,22 @@ class UserItemTile extends StatelessWidget {
             padding: EdgeInsets.only(left: paddingVal),
             child: ClipRRect(
               child: Container(
-                child: Slidable(
-                  endActionPane: ActionPane(
-                    motion: StretchMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: ((context){
-                          //delete
-                        }),
-                        backgroundColor: Colors.redAccent,
-                        icon: CupertinoIcons.delete_solid,
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(paddingVal*1.5),
-                    child: Container(
-                      width: scSize.width,
-                      child: Text(itemName, style: GoogleFonts.itim(
-                          fontSize: fontSize * 1.5,
-                          fontWeight: FontWeight.bold
-                      ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
+                child: Padding(
+                  padding: EdgeInsets.all(paddingVal*1.5),
+                  child: Container(
+                    width: scSize.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(cartItem.name, style: GoogleFonts.itim(
+                            fontSize: fontSize * 1.5,
+                            fontWeight: FontWeight.bold
+                        ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                        IconButton(onPressed: onDeleting, icon: Icon(CupertinoIcons.delete, size: fontSize * 1.5,))
+                      ],
                     ),
                   ),
                 ),

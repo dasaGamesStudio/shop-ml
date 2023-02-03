@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:markethelper/appfunctions/productdatabase.dart';
 import 'package:markethelper/components/autocomplete.dart';
 import 'package:markethelper/components/shoplistcard.dart';
 import 'package:markethelper/models/cart_item_model.dart';
 import 'package:markethelper/models/item_model.dart';
 import 'package:markethelper/pages/take_shelf_image.dart';
+import 'package:markethelper/services/authservice.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -47,6 +46,15 @@ class _CartPageState extends State<CartPage> {
     });
   }
 
+  deleteItemFromCart(CartItem cartItem){
+    print("Deleting Happen");
+    itemsInCart.remove(cartItem);
+    setState(() {
+      itemsInCart = itemsInCart;
+    });
+    print(itemsInCart);
+  }
+
   @override
   void initState() {
     print("initState");
@@ -63,7 +71,6 @@ class _CartPageState extends State<CartPage> {
     double borderRadius = refLength * 0.02;
 
     List<String> shopList = ["carrot", "Macaroni", "Cheese", "Cake", "Eggs"];
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange[500],
@@ -107,12 +114,18 @@ class _CartPageState extends State<CartPage> {
             SizedBox(
               height: paddingVal * 1.5,
             ),
+            ElevatedButton(onPressed: ()=> AddUserCartToServer(itemsInCart), child: Text("Hi")),
             Expanded(
               child: ListView.builder(
                 itemCount: itemsInCart.length,
                 itemBuilder: (context, index) {
                   return UserItemTile(
-                    itemName: itemsInCart[index].name,
+                    cartItem: itemsInCart[index],
+                    onDeleting:() {
+                      //print("pressed");
+                      deleteItemFromCart(itemsInCart[index]);
+                      print(AuthService.uid);
+                    },
                   );
                 },
               ),

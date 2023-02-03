@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:markethelper/components/shoplistcard.dart';
 import 'package:markethelper/models/item_model.dart';
-import 'package:markethelper/productcommands/productdatabase.dart';
+import 'package:markethelper/appfunctions/productdatabase.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -17,7 +17,6 @@ class SearchPage extends StatelessWidget {
     double fontSize = refLength * 0.04;
     double borderRadius = refLength * 0.02;
 
-    final String userID = "hdbvnhbv";
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -45,7 +44,7 @@ class SearchPage extends StatelessWidget {
                       padding: EdgeInsets.only(top: paddingVal),
                       child: ProductItemTile(
                         item: item,
-                        onAddCart: ()=> CreateAUserProductList(userID, item),
+                        //onAddCart: ()=> CreateAUserProductList(userID, item),
                       ),
                     ) : ProductItemTile(item: item);
                   });

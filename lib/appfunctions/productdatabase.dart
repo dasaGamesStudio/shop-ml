@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:markethelper/services/authservice.dart';
+import '../models/cart_item_model.dart';
 import '../models/item_model.dart';
 
 Future CreateAProduct({required Item item}) async {
@@ -18,12 +21,14 @@ Future DeleteAProduct(String productID) async {
   await docProduct.delete();
 }
 
-Future CreateAUserProductList(String userID, Item item) async {
-  final userProductList;
-  userProductList = FirebaseFirestore.instance.collection("UserProDuctList").doc(userID);
-
-  await userProductList.add(item.toJson());
+Future AddUserCartToServer(List<CartItem> cartItems) async{
+  print("Adding Cart Items");
+  final products = await FirebaseFirestore.instance.collection("UserProDuctList").doc(AuthService.uid);
+  cartItems.forEach((element) {
+    products.collection("cartItems").add(element.toJson());
+  });
 }
+
 
 
 

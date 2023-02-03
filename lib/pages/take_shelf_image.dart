@@ -60,7 +60,7 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
           child: Column(
             children: [
               Semantics(child: capturedRackImage != null ? Image.file(File(capturedRackImage!.path)) : Image.asset("assets/Images/cover.png", width: 500, fit: BoxFit.contain,),),
-              if (capturedRackImage != null) ElevatedButton(
+              if (capturedRackImage == null) ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                         horizontal: paddingVal, vertical: paddingVal * 0.1))),

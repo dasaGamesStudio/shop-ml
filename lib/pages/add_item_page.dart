@@ -5,7 +5,7 @@ import 'package:markethelper/dropdowns.dart';
 import 'package:markethelper/models/item_model.dart';
 import 'package:markethelper/models/storeItemPlacement_model.dart';
 
-import '../productcommands/productdatabase.dart';
+import '../appfunctions/productdatabase.dart';
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({Key? key}) : super(key: key);
