@@ -88,25 +88,10 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange[500],
-        leading: Icon(
-          CupertinoIcons.back,
-          size: fontSize * 1.6,
-          color: Colors.white,
-        ),
         title: Text(
           "Shopping Cart",
           style: TextStyle(color: Colors.white, fontSize: fontSize * 1.6),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              CupertinoIcons.shopping_cart,
-              size: fontSize * 1.6,
-              color: Colors.white,
-            ),
-          )
-        ],
       ),
       floatingActionButton: FloatingActionButton(
         tooltip: "Show Best Route",

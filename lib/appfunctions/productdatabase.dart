@@ -38,21 +38,21 @@ Future AddCartItemToCart(CartItem cartItem) async {
   cart.collection("cartItems").add(cartItem.toJson());
 }
 
-Future<List<CartItem>> GetCartItems() async {
-  final result = await FirebaseFirestore.instance
-      .collection("UserCart")
-      .doc(AuthService.uid)
-      .collection("cartItems")
-      .get();
-  List<CartItem> cartItems = <CartItem>[];
-  result.docs.forEach((item) {
-    Map<String, dynamic> obj = item.data() as Map<String, dynamic>;
-    CartItem i = CartItem.fromJson(obj);
-    i.id = item.id;
-    cartItems.add(i);
-  });
-  return cartItems;
-}
+// Future<List<CartItem>> GetCartItems() async {
+//   final result = await FirebaseFirestore.instance
+//       .collection("UserCart")
+//       .doc(AuthService.uid)
+//       .collection("cartItems")
+//       .get();
+//   List<CartItem> cartItems = <CartItem>[];
+//   result.docs.forEach((item) {
+//     Map<String, dynamic> obj = item.data() as Map<String, dynamic>;
+//     CartItem i = CartItem.fromJson(obj);
+//     i.id = item.id;
+//     cartItems.add(i);
+//   });
+//   return cartItems;
+// }
 
 Future DeleteItemFromCart(CartItem item) async {
   print("Deleting cart item" + item.id!);
