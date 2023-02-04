@@ -7,6 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
+import '../navigationSystem/navalgo.dart';
+import '../navigationSystem/navpoints.dart';
+
 class TakeShelfImage extends StatefulWidget {
   const TakeShelfImage({Key? key}) : super(key: key);
 
@@ -168,9 +171,10 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
+              ElevatedButton(onPressed: ()=> NavSys.FindPath(WaypointNode.n1, WaypointNode.n2), child: Text("Test Nav Sys")),
             ],
           ),
         ));

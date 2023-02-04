@@ -6,6 +6,8 @@ import 'package:markethelper/components/autocomplete.dart';
 import 'package:markethelper/components/shoplistcard.dart';
 import 'package:markethelper/models/cart_item_model.dart';
 import 'package:markethelper/models/item_model.dart';
+import 'package:markethelper/navigationSystem/navalgo.dart';
+import 'package:markethelper/navigationSystem/navpoints.dart';
 import 'package:markethelper/pages/take_shelf_image.dart';
 import 'package:markethelper/services/authservice.dart';
 
@@ -117,7 +119,6 @@ class _CartPageState extends State<CartPage> {
             SizedBox(
               height: paddingVal * 1.5,
             ),
-            // ElevatedButton(onPressed: ()=> AddUserCartToServer(itemsInCart), child: Text("Hi")),
             Expanded(
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
