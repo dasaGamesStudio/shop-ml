@@ -1,5 +1,5 @@
 class CartItem {
-  String id;
+  String? id;
   String name;
   String shelfID;
 

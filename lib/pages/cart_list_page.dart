@@ -18,20 +18,20 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<Item> itemsInDb = <Item>[];
-  List<CartItem> itemsInCart = <CartItem>[];
 
   _loadProducts() async {
     print("_laodProducts");
-    QuerySnapshot data = await FirebaseFirestore.instance.collection("products").get();
+    QuerySnapshot data =
+        await FirebaseFirestore.instance.collection("products").get();
     List<Item> items = <Item>[];
 
-    data.docs.forEach((item){
+    data.docs.forEach((item) {
       Map<String, dynamic> obj = item.data() as Map<String, dynamic>;
       Item i = Item.fromJson(obj);
       items.add(i);
     });
 
-    if(mounted) {
+    if (mounted) {
       setState(() {
         itemsInDb = items;
       });
@@ -39,26 +39,40 @@ class _CartPageState extends State<CartPage> {
   }
 
   addToCart(CartItem cartItem) {
-    print("addToCart invoked with item " + cartItem.name);
-    itemsInCart.add(cartItem);
-    setState(() {
-      itemsInCart = itemsInCart;
-    });
+    print("addToCart invoked with item " + cartItem.name!);
+    AddCartItemToCart(cartItem);
   }
 
-  deleteItemFromCart(CartItem cartItem){
+  getItemsInCartFDatabase() async {
+    print("getitems in cart database");
+    QuerySnapshot data =
+        await FirebaseFirestore.instance.collection("userplist").get();
+    List<CartItem> items = <CartItem>[];
+    print(data.size);
+    // data.docs.forEach((item){
+    //   Map<String, dynamic> obj = item.data() as Map<String, dynamic>;
+    //   CartItem i = CartItem.fromJson(obj);
+    //   items.add(i);
+    // });
+    //
+    //
+    // if(mounted) {
+    //   setState(() {
+    //     itemsInCart = items;
+    //   });
+    // }
+  }
+
+  deleteItemFromCart(CartItem cartItem) {
     print("Deleting Happen");
-    itemsInCart.remove(cartItem);
-    setState(() {
-      itemsInCart = itemsInCart;
-    });
-    print(itemsInCart);
+    DeleteItemFromCart(cartItem);
   }
 
   @override
   void initState() {
     print("initState");
     _loadProducts();
+    getItemsInCartFDatabase();
   }
 
   @override
@@ -98,7 +112,8 @@ class _CartPageState extends State<CartPage> {
         tooltip: "Show Best Route",
         onPressed: () {
           // go to camera view
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const TakeShelfImage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const TakeShelfImage()));
         },
         child: Icon(
           Icons.my_location,
@@ -110,25 +125,40 @@ class _CartPageState extends State<CartPage> {
         padding: EdgeInsets.all(paddingVal * 0.8),
         child: Column(
           children: [
-            AutocompleteWidget(itemList: itemsInDb, addToCart: addToCart,),
+            AutocompleteWidget(
+              itemList: itemsInDb,
+              addToCart: addToCart,
+            ),
             SizedBox(
               height: paddingVal * 1.5,
             ),
-            ElevatedButton(onPressed: ()=> AddUserCartToServer(itemsInCart), child: Text("Hi")),
+            // ElevatedButton(onPressed: ()=> AddUserCartToServer(itemsInCart), child: Text("Hi")),
             Expanded(
-              child: ListView.builder(
-                itemCount: itemsInCart.length,
-                itemBuilder: (context, index) {
-                  return UserItemTile(
-                    cartItem: itemsInCart[index],
-                    onDeleting:() {
-                      //print("pressed");
-                      deleteItemFromCart(itemsInCart[index]);
-                      print(AuthService.uid);
-                    },
-                  );
-                },
-              ),
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("UserCart")
+                      .doc(AuthService.uid)
+                      .collection("cartItems")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    return ListView.builder(
+                      itemCount: snapshot.data?.docs.length,
+                      itemBuilder: (context, index) {
+                        if(snapshot.data == null) return CircularProgressIndicator();
+                        final CartItem item = CartItem(
+                            id: snapshot.data?.docs[index].id,
+                            name: snapshot.data?.docs[index]['name']!,
+                            shelfID: snapshot.data?.docs[index]['shelfID']!);
+                        return UserItemTile(
+                          cartItem: item,
+                          onDeleting: () {
+                            //print("pressed");
+                            deleteItemFromCart(item);
+                          },
+                        );
+                      },
+                    );
+                  }),
             ),
           ],
         ),
