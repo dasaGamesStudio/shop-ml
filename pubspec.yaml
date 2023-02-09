@@ -47,6 +47,7 @@ dependencies:
   camera: ^0.10.3
   photo_view: ^0.14.0
   image_picker: ^0.8.6+1
+  flutter_secure_storage: ^7.0.1
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,7 @@ flutter:
   assets:
     - assets/Images/
     - assets/Icons/
+    - assets/maps/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

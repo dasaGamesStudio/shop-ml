@@ -18,4 +18,5 @@ class CartItem {
       id: json['id'],
       shelfID: json['shelfID'],
   );
+
 }

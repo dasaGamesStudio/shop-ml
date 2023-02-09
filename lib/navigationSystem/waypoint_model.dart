@@ -1,36 +1,29 @@
 import 'package:flutter/rendering.dart';
 
-class WNode{
-  String name;
-  Size? pixelPos;
-  double avoidance;
-  String? assignShelfID;
-  String? assignSectionID;
-  WNode? parentNode;
-  List<ConnectedWNode>? connectedNodes;
+class WNode {
+  String id;
+  Size position;
+  double gCost;
+  double fCost;
+
+  bool isWalkable;
+
+  WNode? connection;
+  List<WNode> neighbors;
 
   WNode({
-    required this.name,
-    this.pixelPos,
-    this.assignSectionID,
-    this.assignShelfID,
-    this.parentNode,
-    this.avoidance = 0,
-    this.connectedNodes,
-});
-}
-
-class ConnectedWNode{
-  WNode Node;
-  double distance;
-
-  ConnectedWNode({
-    required this.Node,
-    required this.distance,
+    required this.id,
+    this.position = Size.zero,
+    this.gCost = 0,
+    this.fCost = double.maxFinite,
+    this.isWalkable = true,
+    this.connection,
+    required this.neighbors,
   });
+
 }
 
-class Path{
+class Path {
   double score;
   List<WNode> nodes;
 

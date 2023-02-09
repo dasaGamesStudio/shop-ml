@@ -174,7 +174,6 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
                     ),
                   ],
                 ),
-              ElevatedButton(onPressed: ()=> NavSys.FindPath(WaypointNode.n1, WaypointNode.n2), child: Text("Test Nav Sys")),
             ],
           ),
         ));
