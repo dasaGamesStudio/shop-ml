@@ -72,6 +72,7 @@ class NavPoint{
         }
       });
     });
+    print("Fuck Neighbors haha");
   }
 
 }

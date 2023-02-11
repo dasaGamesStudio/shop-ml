@@ -4,22 +4,29 @@ class WNode {
   String id;
   Size position;
   double gCost;
-  double fCost;
+  double hCost;
 
-  bool isWalkable;
+  bool walkable;
 
-  WNode? connection;
+  WNode? parent;
   List<WNode> neighbors;
 
   WNode({
     required this.id,
     this.position = Size.zero,
-    this.gCost = 0,
-    this.fCost = double.maxFinite,
-    this.isWalkable = true,
-    this.connection,
+    this.gCost = double.maxFinite,
+    this.hCost = double.maxFinite,
+    this.walkable = true,
+    this.parent,
     required this.neighbors,
   });
+
+  double getF(){
+    return gCost + hCost;
+  }
+
+  void setGCost(double g) => gCost = g;
+  void setHCost(double h) => hCost = h;
 
 }
 

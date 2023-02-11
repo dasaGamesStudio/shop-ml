@@ -14,4 +14,8 @@ class MathDGS {
     return sqrt((a.width - b.width)*(a.width - b.width) + (a.height - b.height)*(a.height - b.height));
   }
 
+  static double ManhattanDistance(Size a, Size b){
+    return (a.width - b.width).abs() + (a.height - b.height).abs();
+  }
+
 }

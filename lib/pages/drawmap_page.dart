@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:markethelper/mypackages/mathdgs.dart';
+import 'package:markethelper/navigationSystem/navalgo.dart';
 import 'package:markethelper/navigationSystem/navpoints.dart';
 import 'package:markethelper/navigationSystem/waypoint_model.dart';
 
@@ -70,7 +71,10 @@ class _MapPageState extends State<MapPage> {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: ()=> NavPoint.GetNavNeighbors(), child: Text("Get Neighbors")),
+            ElevatedButton(onPressed: (){
+              NavPoint.GetNavNeighbors();
+              NavSys.FindPath(NavPoint.w1, NavPoint.w3);
+            }, child: Text("Get Neighbors")),
           ]),
     );
   }
@@ -92,10 +96,6 @@ class MapRoutePainter extends CustomPainter {
 
     list.forEach((element) {
       canvas.drawCircle(Offset(element.position.width, element.position.height), 20, paint);
-    });
-
-    NavPoint.w27.neighbors.forEach((element) {
-      canvas.drawCircle(Offset(element.position.width, element.position.height), 25, paint..color =Colors.green);
     });
 
   }
