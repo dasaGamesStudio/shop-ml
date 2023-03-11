@@ -146,6 +146,7 @@ class _CartPageState extends State<CartPage> {
                     );
                   }),
             ),
+            ElevatedButton(onPressed: ()=> AuthService().SignOut(), child: Text("Sign Out"))
           ],
         ),
       ),

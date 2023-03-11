@@ -22,7 +22,7 @@ class AuthPage extends StatelessWidget {
         builder: (context,snapshot){
           if(snapshot.hasData){
             AuthService().getCurrentUser();
-            return MapPage(); //add cart page here
+            return CartPage(); //add cart page here
           }else{
             return LoginPage();
           }
