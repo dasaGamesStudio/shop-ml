@@ -27,23 +27,6 @@ class NavSys {
         break;
       }
 
-      // currentNode.neighbors.forEach((neighbor) {
-      //   if(neighbor.walkable || !closedSet.contains(neighbor)){
-      //     double newMovementCostToNeighbor = currentNode.gCost + MathDGS.ManhattanDistance(currentNode.position, neighbor.position);
-      //     if(newMovementCostToNeighbor < neighbor.gCost || !openSet.contains(neighbor)){
-      //       neighbor.setGCost(newMovementCostToNeighbor);
-      //       neighbor.setHCost(MathDGS.ManhattanDistance(neighbor.position, endNode.position));
-      //       neighbor.parent = currentNode;
-      //
-      //       if(!openSet.contains(neighbor)){
-      //         openSet.add(neighbor);
-      //       }
-      //     }
-      //   }
-      //
-      // }
-      // );
-
       for(int i = 0; i < currentNode.neighbors.length; i++){
         var neighbor = currentNode.neighbors[i];
         if(!neighbor.walkable || closedSet.contains(neighbor)){
@@ -68,7 +51,7 @@ class NavSys {
     List<WNode> path = [];
 
     WNode? currentNode = endNode;
-
+    double distance = 0;
     while(currentNode != startNode){
       path.add(currentNode!);
       currentNode = currentNode?.parent;
@@ -77,5 +60,8 @@ class NavSys {
 
     path = List.from(path.reversed);
     NavPath = path;
+    NavPath.forEach((element) {
+      print(element.id);
+    });
   }
 }

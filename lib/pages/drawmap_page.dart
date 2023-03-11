@@ -1,11 +1,6 @@
-import 'dart:convert';
 import 'dart:ui' as ui;
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:markethelper/mypackages/mathdgs.dart';
 import 'package:markethelper/navigationSystem/navalgo.dart';
 import 'package:markethelper/navigationSystem/navpoints.dart';
 import 'package:markethelper/navigationSystem/waypoint_model.dart';
@@ -64,7 +59,8 @@ class _MapPageState extends State<MapPage> {
                       width: image?.width.toDouble(),
                       height: image?.height.toDouble(),
                       child: CustomPaint(
-                        foregroundPainter: MapRoutePainter(image!, mapRes: Size(40,28)),
+                        painter: MapImagePainter(image!),
+                        foregroundPainter: DrawPath(),
                       ),
                     ),
                   ),
@@ -73,18 +69,17 @@ class _MapPageState extends State<MapPage> {
             ),
             ElevatedButton(onPressed: (){
               NavPoint.GetNavNeighbors();
-              NavSys.FindPath(NavPoint.w1, NavPoint.w3);
+              NavSys.FindPath(NavPoint.w30, NavPoint.w8);
             }, child: Text("Get Neighbors")),
           ]),
     );
   }
 }
 
-class MapRoutePainter extends CustomPainter {
+class MapImagePainter extends CustomPainter {
   final ui.Image image;
-  final Size mapRes;
 
-  const MapRoutePainter(this.image, {this.mapRes = Size.zero});
+  const MapImagePainter(this.image);
 
   @override
   Future<void> paint(Canvas canvas, Size size) async {
@@ -95,8 +90,40 @@ class MapRoutePainter extends CustomPainter {
     final List<WNode> list = NavPoint.NavPList;
 
     list.forEach((element) {
-      canvas.drawCircle(Offset(element.position.width, element.position.height), 20, paint);
+      canvas.drawCircle(Offset(element.position.width, element.position.height), 10, paint);
     });
+
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class DrawPath extends CustomPainter {
+
+//  const DrawPath(this.image);
+
+  @override
+  void paint(Canvas canvas, Size size) async {
+    final paint = Paint()
+      ..color = Colors.green;
+   // canvas.drawImage(image, Offset.zero, paint);
+
+    final List<WNode> list = NavSys.NavPath;
+
+    // list.forEach((element) {
+    //   canvas.drawCircle(Offset(element.position.width, element.position.height), 15, paint);
+    // });
+
+    for(int i = 1; i < list.length; i++){
+      canvas.drawLine(
+          Offset(list[i-1].position.width, list[i-1].position.height), Offset(list[i].position.width, list[i].position.height),
+          paint..color = Colors.green..strokeWidth = 30..strokeCap = StrokeCap.round
+      );
+    }
+    canvas.drawCircle(Offset(list[0].position.width, list[0].position.height), 40, paint..color = Colors.blue);
+    canvas.drawCircle(Offset(list[list.length-1].position.width, list[list.length-1].position.height), 40, paint..color = Colors.green);
+
 
   }
 

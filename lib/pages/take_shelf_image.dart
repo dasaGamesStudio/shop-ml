@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:markethelper/pages/drawmap_page.dart';
+import 'dart:convert';
 
 import '../navigationSystem/navalgo.dart';
 import '../navigationSystem/navpoints.dart';
@@ -20,6 +22,7 @@ class TakeShelfImage extends StatefulWidget {
 class _TakeShelfImageState extends State<TakeShelfImage> {
   final ImagePicker _picker = ImagePicker();
   XFile? capturedRackImage = null;
+  String errMsg = "";
 
   _takePhoto(double maxHeight, double maxWidth) async {
     try {
@@ -48,9 +51,23 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
       if (response.statusCode == 200) {
         var responseData = await response.stream.toBytes();
         var responseToString = String.fromCharCodes(responseData);
-        print(responseToString);
+        var res = json.decode(responseToString);
+        print(res['content']);
+        if(res['content'] == "") {
+          setState(() {
+            errMsg = "Invalid rack number. Please Re-scan the image";
+          });
+        } else {
+          // check the number is exists on rack ids
+
+          // pass starting point and other points to drawmap page
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const MapPage()));
+        }
       } else {
-        print(response.statusCode);
+        setState(() {
+          errMsg = "Error occured when trying to analyzing the image - status code ${response.statusCode}";
+        });
       }
     });
   }
@@ -174,6 +191,7 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
                     ),
                   ],
                 ),
+              if(errMsg != "") Center(child: Text(errMsg, style: TextStyle(color: Colors.red, fontSize: 16),),)
             ],
           ),
         ));
