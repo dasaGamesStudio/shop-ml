@@ -1,9 +1,21 @@
 
 import 'package:markethelper/mypackages/mathdgs.dart';
+import 'package:markethelper/navigationSystem/navpoints.dart';
 import 'package:markethelper/navigationSystem/waypoint_model.dart';
 
 class NavSys {
   static List<WNode> NavPath = [];
+  static List<WNode> PPLaceNodes = [];
+
+  static GetProductPlacementNodes(List<String> ids){
+    NavPoint.NavPList.forEach((node) {
+      if(ids.contains(node.id)){
+        PPLaceNodes.add(node);
+        print(node.id + " found this");
+      }
+    });
+  }
+
   static FindPath(WNode startNode,WNode endNode) {
     List<WNode> openSet = [];
     openSet.add(startNode);
@@ -45,6 +57,53 @@ class NavSys {
       }
     }
 
+  }
+
+  static FindPathFromMultiple(WNode startNode,List<WNode> endNodes){
+    List<WNode> openSet = [];
+    openSet.add(startNode);
+    List<WNode> closedSet = [];
+    WNode endNode;
+
+    while (openSet.isNotEmpty){
+      WNode currentNode = openSet[0];
+      for(int i =1; i < openSet.length; i++){
+        if(openSet[i].getF() < currentNode.getF() || openSet[i].getF() == currentNode.getF() && openSet[i].hCost < currentNode.hCost){
+          currentNode = openSet[i];
+        }
+      }
+
+      openSet.remove(currentNode);
+      closedSet.add(currentNode);
+
+      if(endNodes.contains(currentNode)){
+        print("Found The Target Node");
+        ReConstructPath(startNode, currentNode);
+        endNode = currentNode;
+        //return;
+        break;
+      }
+
+      endNodes.forEach((element) {
+        endNode = element;
+        for(int i = 0; i < currentNode.neighbors.length; i++){
+          var neighbor = currentNode.neighbors[i];
+          if(!neighbor.walkable || closedSet.contains(neighbor)){
+            continue;
+          }
+          double newMovementCostToNeighbor = currentNode.gCost + MathDGS.ManhattanDistance(currentNode.position, neighbor.position);
+          if(newMovementCostToNeighbor < neighbor.gCost || !openSet.contains(neighbor)){
+            neighbor.setGCost(newMovementCostToNeighbor);
+            neighbor.setHCost(MathDGS.ManhattanDistance(neighbor.position, endNode.position));
+            neighbor.parent = currentNode;
+
+            if(!openSet.contains(neighbor)){
+              openSet.add(neighbor);
+            }
+          }
+        }
+      });
+    }
   }
 
   static ReConstructPath(WNode startNode, WNode endNode){

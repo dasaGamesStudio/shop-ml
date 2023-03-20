@@ -8,6 +8,7 @@ import 'package:markethelper/models/cart_item_model.dart';
 import 'package:markethelper/models/item_model.dart';
 import 'package:markethelper/navigationSystem/navalgo.dart';
 import 'package:markethelper/navigationSystem/navpoints.dart';
+import 'package:markethelper/pages/drawmap_page.dart';
 import 'package:markethelper/pages/take_shelf_image.dart';
 import 'package:markethelper/services/authservice.dart';
 
@@ -100,7 +101,8 @@ class _CartPageState extends State<CartPage> {
         onPressed: () {
           // go to camera view
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const TakeShelfImage()));
+              //MaterialPageRoute(builder: (context) => const TakeShelfImage()));
+              MaterialPageRoute(builder: (context) => const MapPage()));
         },
         child: Icon(
           Icons.my_location,
@@ -134,7 +136,12 @@ class _CartPageState extends State<CartPage> {
                         final CartItem item = CartItem(
                             id: snapshot.data?.docs[index].id,
                             name: snapshot.data?.docs[index]['name']!,
-                            shelfID: snapshot.data?.docs[index]['shelfID']!);
+                            shelfID: snapshot.data?.docs[index]['shelfID']!,
+                            sectionID: snapshot.data?.docs[index]['sectionID']!,
+                        );
+                        if(!CartMapData.cmItems.any((citm) => citm.id == item.id)){
+                          CartMapData.cmItems.add(item);
+                        }
                         return UserItemTile(
                           cartItem: item,
                           onDeleting: () {

@@ -45,7 +45,7 @@ class AutocompleteWidget extends StatelessWidget {
             onSelected: (Item selectedItem) {
               print("item is selected " + selectedItem.name);
               // CartItem(id: selectedItem.id, name: selectedItem.name, shelfID: selectedItem.shelfID);
-              addToCart(CartItem(id: selectedItem.id, name: selectedItem.name, shelfID: selectedItem.shelfID));
+              addToCart(CartItem(id: selectedItem.id, name: selectedItem.name, shelfID: selectedItem.shelfID, sectionID: selectedItem.sectionID));
               textEditingController.text = "";
             },
             fieldViewBuilder: (BuildContext context, TextEditingController fieldTextEditingController,

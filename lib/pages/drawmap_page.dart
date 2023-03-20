@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:markethelper/appfunctions/productdatabase.dart';
 import 'package:markethelper/navigationSystem/navalgo.dart';
 import 'package:markethelper/navigationSystem/navpoints.dart';
 import 'package:markethelper/navigationSystem/waypoint_model.dart';
@@ -20,6 +22,13 @@ class _MapPageState extends State<MapPage> {
     super.initState();
     NavPoint.GetNavNeighbors();
     loadImage("assets/maps/shopmap.png");
+    List<String> idslist =[];
+    CartMapData.cmItems.forEach((element) {
+      idslist.add(element.shelfID+element.sectionID);
+    });
+    //print(idslist[0]+" Bhanuka Idiot");
+    print(CartMapData.cmItems.length.toString() + " Bhanuka Haraka");
+    NavSys.GetProductPlacementNodes(["2a"]);
   }
 
   Future loadImage(String path) async {
@@ -39,8 +48,17 @@ class _MapPageState extends State<MapPage> {
     double paddingVal = refLength * 0.05;
     double fontSize = refLength * 0.04;
 
+    print(NavSys.PPLaceNodes.length.toString() +" hefrjhfjfvdjfhvkdhvkdhfvjkfhkvjf");
+    NavSys.FindPathFromMultiple(NavPoint.w2, NavSys.PPLaceNodes);
+
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: Text(
+          "Map View",
+          style: TextStyle(color: Colors.white, fontSize: fontSize * 1.6),
+        ),
+      ),
       body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -67,11 +85,62 @@ class _MapPageState extends State<MapPage> {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: (){
-              NavPoint.GetNavNeighbors();
-              NavSys.FindPath(NavPoint.w30, NavPoint.w8);
-            }, child: Text("Get Neighbors")),
-          ]),
+            SafeArea(
+              bottom: true,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: paddingVal * 0.5),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(refLength * 0.05),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade800, width: paddingVal * 0.08),
+                        borderRadius: BorderRadius.circular(refLength * 0.05),
+                        color: Color.fromARGB(150, 255, 255, 255)
+                      ),
+                      height: 100,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.red),
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10000))),
+                                side: MaterialStateProperty.all(BorderSide(width: 1,color: Colors.white)),
+                                padding: MaterialStateProperty.all(EdgeInsets.all(refLength * 0.05)),
+                              ),
+                              onPressed: (){},
+                              child: Icon(Icons.close_rounded, color: Colors.white,size: fontSize * 2,)
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text("Apple",style: TextStyle(fontSize: fontSize * 2, color: Colors.green),),
+                              Text("Shelf: 2a",style: TextStyle(fontSize: fontSize, color: Colors.grey[600]),),
+                              Text("Floor: 2",style: TextStyle(fontSize: fontSize, color: Colors.grey[600]),),
+                            ],
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.green),
+                              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10000))),
+                              side: MaterialStateProperty.all(BorderSide(width: 1,color: Colors.white)),
+                              padding: MaterialStateProperty.all(EdgeInsets.all(refLength * 0.05)),
+                            ),
+                              onPressed: (){},
+                              child: Icon(Icons.shopping_bag_rounded, color: Colors.white,size: fontSize * 2,)
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ]
+      )
+      ,
     );
   }
 }
@@ -109,25 +178,37 @@ class DrawPath extends CustomPainter {
       ..color = Colors.green;
    // canvas.drawImage(image, Offset.zero, paint);
 
-    final List<WNode> list = NavSys.NavPath;
+    final List<WNode> wayPlist = NavSys.NavPath;
 
-    // list.forEach((element) {
-    //   canvas.drawCircle(Offset(element.position.width, element.position.height), 15, paint);
-    // });
-
-    for(int i = 1; i < list.length; i++){
+    for(int i = 1; i < wayPlist.length; i++){
       canvas.drawLine(
-          Offset(list[i-1].position.width, list[i-1].position.height), Offset(list[i].position.width, list[i].position.height),
-          paint..color = Colors.green..strokeWidth = 30..strokeCap = StrokeCap.round
+          Offset(wayPlist[i-1].position.width, wayPlist[i-1].position.height), Offset(wayPlist[i].position.width, wayPlist[i].position.height),
+          paint..color = Colors.blue.shade800..strokeWidth = 35..strokeCap = StrokeCap.round
       );
     }
-    canvas.drawCircle(Offset(list[0].position.width, list[0].position.height), 40, paint..color = Colors.blue);
-    canvas.drawCircle(Offset(list[list.length-1].position.width, list[list.length-1].position.height), 40, paint..color = Colors.green);
+    for(int i = 1; i < wayPlist.length; i++){
+      canvas.drawLine(
+          Offset(wayPlist[i-1].position.width, wayPlist[i-1].position.height), Offset(wayPlist[i].position.width, wayPlist[i].position.height),
+          paint..color = Colors.blue.shade300..strokeWidth = 25..strokeCap = StrokeCap.round
+      );
+    }
 
+    // User Location markeer
+    canvas.drawCircle(Offset(wayPlist[0].position.width, wayPlist[0].position.height), 40, paint..color = Colors.grey.shade700);
+    canvas.drawCircle(Offset(wayPlist[0].position.width, wayPlist[0].position.height), 32, paint..color = Colors.grey.shade400);
+
+    // Product Location Marker
+    canvas.drawCircle(Offset(wayPlist[wayPlist.length-1].position.width, wayPlist[wayPlist.length-1].position.height), 40, paint..color = Colors.grey.shade800);
+    canvas.drawCircle(Offset(wayPlist[wayPlist.length-1].position.width, wayPlist[wayPlist.length-1].position.height), 32, paint..color = Colors.grey.shade100);
 
   }
+
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
+// ElevatedButton(onPressed: (){
+// NavPoint.GetNavNeighbors();
+// NavSys.FindPathFromMultiple(NavPoint.w30, [NavPoint.w20,NavPoint.w1, NavPoint.w39]);
+// }, child: Text("Get Neighbors")),

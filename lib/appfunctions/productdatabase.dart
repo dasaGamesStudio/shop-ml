@@ -4,6 +4,10 @@ import 'package:markethelper/services/authservice.dart';
 import '../models/cart_item_model.dart';
 import '../models/item_model.dart';
 
+class CartMapData{
+  static List<CartItem> cmItems = [];
+}
+
 Future CreateAProduct({required Item item}) async {
   final docProduct;
   if (item.id.isEmpty) {
@@ -32,6 +36,7 @@ Future AddUserCartToServer(List<CartItem> cartItems) async {
 }
 
 Future AddCartItemToCart(CartItem cartItem) async {
+  //CartMapData.cmItems.add(cartItem);
   final cart = await FirebaseFirestore.instance
       .collection("UserCart")
       .doc(AuthService.uid);
@@ -56,6 +61,7 @@ Future AddCartItemToCart(CartItem cartItem) async {
 
 Future DeleteItemFromCart(CartItem item) async {
   print("Deleting cart item" + item.id!);
+  //CartMapData.cmItems.remove(item);
   return await FirebaseFirestore.instance
       .collection("UserCart")
       .doc(AuthService.uid)
