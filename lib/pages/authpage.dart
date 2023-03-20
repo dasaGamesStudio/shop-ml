@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:markethelper/pages/add_item_page.dart';
 import 'package:markethelper/pages/cart_list_page.dart';
 import 'package:markethelper/pages/drawmap_page.dart';
 import 'package:markethelper/pages/search_page.dart';

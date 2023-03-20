@@ -24,9 +24,9 @@ class _LoginPageState extends State<LoginPage> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: scSize.height * 0.2),
-              Image.asset("assets/Images/Shopping_Center.png", width: refLength * 0.7, fit: BoxFit.contain,),
-              SizedBox(height: paddingVal,),
+              SizedBox(height: scSize.height * 0.25),
+              Image.asset("assets/Images/eshopping.jpeg", width: refLength * 0.7, fit: BoxFit.contain,),
+              SizedBox(height: scSize.height * 0.1,),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: paddingVal * 3),
                 child: ElevatedButton(
@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
                     )
                 ),
               ),
-              ElevatedButton(onPressed: ()=> AuthService().SignOut(), child: Text("Sign Out"))
             ],
           ),
         ),

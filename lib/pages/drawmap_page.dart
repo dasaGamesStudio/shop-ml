@@ -28,7 +28,7 @@ class _MapPageState extends State<MapPage> {
     });
     //print(idslist[0]+" Bhanuka Idiot");
     print(CartMapData.cmItems.length.toString() + " Bhanuka Haraka");
-    NavSys.GetProductPlacementNodes(["2a"]);
+    NavSys.GetProductPlacementNodes(idslist);
   }
 
   Future loadImage(String path) async {
