@@ -60,50 +60,18 @@ class NavSys {
   }
 
   static FindPathFromMultiple(WNode startNode,List<WNode> endNodes){
-    List<WNode> openSet = [];
-    openSet.add(startNode);
-    List<WNode> closedSet = [];
-    WNode endNode;
+    WNode targetNode = startNode;
+    double dis = double.infinity;
 
-    while (openSet.isNotEmpty){
-      WNode currentNode = openSet[0];
-      for(int i =1; i < openSet.length; i++){
-        if(openSet[i].getF() < currentNode.getF() || openSet[i].getF() == currentNode.getF() && openSet[i].hCost < currentNode.hCost){
-          currentNode = openSet[i];
-        }
+    endNodes.forEach((element) {
+      double cdis = MathDGS.Distance(startNode.position, element.position);
+      if(cdis < dis){
+        dis = cdis;
+        targetNode = element;
       }
+    });
 
-      openSet.remove(currentNode);
-      closedSet.add(currentNode);
-
-      if(endNodes.contains(currentNode)){
-        print("Found The Target Node");
-        ReConstructPath(startNode, currentNode);
-        endNode = currentNode;
-        //return;
-        break;
-      }
-
-      endNodes.forEach((element) {
-        endNode = element;
-        for(int i = 0; i < currentNode.neighbors.length; i++){
-          var neighbor = currentNode.neighbors[i];
-          if(!neighbor.walkable || closedSet.contains(neighbor)){
-            continue;
-          }
-          double newMovementCostToNeighbor = currentNode.gCost + MathDGS.ManhattanDistance(currentNode.position, neighbor.position);
-          if(newMovementCostToNeighbor < neighbor.gCost || !openSet.contains(neighbor)){
-            neighbor.setGCost(newMovementCostToNeighbor);
-            neighbor.setHCost(MathDGS.ManhattanDistance(neighbor.position, endNode.position));
-            neighbor.parent = currentNode;
-
-            if(!openSet.contains(neighbor)){
-              openSet.add(neighbor);
-            }
-          }
-        }
-      });
-    }
+    FindPath(startNode, targetNode);
   }
 
   static ReConstructPath(WNode startNode, WNode endNode){
