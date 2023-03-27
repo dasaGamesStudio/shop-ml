@@ -191,7 +191,7 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
                     ),
                   ],
                 ),
-              if(errMsg != "") Center(child: Text(errMsg, style: TextStyle(color: Colors.red, fontSize: 16),),)
+              if(errMsg != "") Center(child: Text(errMsg, style: TextStyle(color: Colors.red, fontSize: 16),),),
             ],
           ),
         ));

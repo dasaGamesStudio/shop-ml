@@ -1,11 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:markethelper/navigationSystem/navalgo.dart';
+import 'package:markethelper/navigationSystem/waypoint_model.dart';
 import 'package:markethelper/services/authservice.dart';
 import '../models/cart_item_model.dart';
 import '../models/item_model.dart';
 
 class CartMapData{
   static List<CartItem> cmItems = [];
+  static List<CartItem> cItemsatPlace = [];
+
+  static GetModCartItemNames(){
+    String names = "";
+    cmItems.forEach((element) {
+      if(element.shelfID+element.sectionID == NavSys.TargetNode.id){
+        names += element.name +"\n";
+      }
+    });
+    return names;
+  }
+  static GetCartItemsAtNode(String nodeID){
+    cItemsatPlace.clear();
+    cmItems.forEach((element) {
+      if(element.shelfID+element.sectionID == NavSys.TargetNode.id){
+        cItemsatPlace.add(element);
+      }
+    });
+  }
+
 }
 
 Future CreateAProduct({required Item item}) async {
@@ -36,32 +58,17 @@ Future AddUserCartToServer(List<CartItem> cartItems) async {
 }
 
 Future AddCartItemToCart(CartItem cartItem) async {
-  //CartMapData.cmItems.add(cartItem);
   final cart = await FirebaseFirestore.instance
       .collection("UserCart")
       .doc(AuthService.uid);
   cart.collection("cartItems").add(cartItem.toJson());
+
 }
 
-// Future<List<CartItem>> GetCartItems() async {
-//   final result = await FirebaseFirestore.instance
-//       .collection("UserCart")
-//       .doc(AuthService.uid)
-//       .collection("cartItems")
-//       .get();
-//   List<CartItem> cartItems = <CartItem>[];
-//   result.docs.forEach((item) {
-//     Map<String, dynamic> obj = item.data() as Map<String, dynamic>;
-//     CartItem i = CartItem.fromJson(obj);
-//     i.id = item.id;
-//     cartItems.add(i);
-//   });
-//   return cartItems;
-// }
+
 
 Future DeleteItemFromCart(CartItem item) async {
-  print("Deleting cart item" + item.id!);
-  //CartMapData.cmItems.remove(item);
+  CartMapData.cmItems.remove(item);
   return await FirebaseFirestore.instance
       .collection("UserCart")
       .doc(AuthService.uid)

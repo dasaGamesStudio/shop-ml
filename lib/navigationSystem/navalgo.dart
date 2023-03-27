@@ -1,4 +1,5 @@
 
+import 'package:markethelper/appfunctions/productdatabase.dart';
 import 'package:markethelper/mypackages/mathdgs.dart';
 import 'package:markethelper/navigationSystem/navpoints.dart';
 import 'package:markethelper/navigationSystem/waypoint_model.dart';
@@ -6,12 +7,13 @@ import 'package:markethelper/navigationSystem/waypoint_model.dart';
 class NavSys {
   static List<WNode> NavPath = [];
   static List<WNode> PPLaceNodes = [];
+  static WNode TargetNode = NavPoint.w1;
 
   static GetProductPlacementNodes(List<String> ids){
+    NavSys.PPLaceNodes.clear();
     NavPoint.NavPList.forEach((node) {
       if(ids.contains(node.id)){
         PPLaceNodes.add(node);
-        print(node.id + " found this");
       }
     });
   }
@@ -20,6 +22,8 @@ class NavSys {
     List<WNode> openSet = [];
     openSet.add(startNode);
     List<WNode> closedSet = [];
+
+    TargetNode = endNode;
 
     while (openSet.isNotEmpty){
       WNode currentNode = openSet[0];
@@ -70,8 +74,9 @@ class NavSys {
         targetNode = element;
       }
     });
-
+    TargetNode = targetNode;
     FindPath(startNode, targetNode);
+
   }
 
   static ReConstructPath(WNode startNode, WNode endNode){

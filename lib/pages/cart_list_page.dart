@@ -46,36 +46,37 @@ class _CartPageState extends State<CartPage> {
     AddCartItemToCart(cartItem);
   }
 
-  getItemsInCartFDatabase() async {
-    print("getitems in cart database");
-    QuerySnapshot data =
-        await FirebaseFirestore.instance.collection("userplist").get();
-    List<CartItem> items = <CartItem>[];
-    print(data.size);
-    // data.docs.forEach((item){
-    //   Map<String, dynamic> obj = item.data() as Map<String, dynamic>;
-    //   CartItem i = CartItem.fromJson(obj);
-    //   items.add(i);
-    // });
-    //
-    //
-    // if(mounted) {
-    //   setState(() {
-    //     itemsInCart = items;
-    //   });
-    // }
-  }
+  // getItemsInCartFDatabase() async {
+  //   print("getitems in cart database");
+  //   QuerySnapshot data =
+  //       await FirebaseFirestore.instance.collection("userplist").get();
+  //   List<CartItem> items = <CartItem>[];
+  //   print(data.size);
+  //   // data.docs.forEach((item){
+  //   //   Map<String, dynamic> obj = item.data() as Map<String, dynamic>;
+  //   //   CartItem i = CartItem.fromJson(obj);
+  //   //   items.add(i);
+  //   // });
+  //   //
+  //   //
+  //   // if(mounted) {
+  //   //   setState(() {
+  //   //     itemsInCart = items;
+  //   //   });
+  //   // }
+  // }
 
   deleteItemFromCart(CartItem cartItem) {
     print("Deleting Happen");
     DeleteItemFromCart(cartItem);
   }
 
+
   @override
   void initState() {
     print("initState");
     _loadProducts();
-    getItemsInCartFDatabase();
+    //getItemsInCartFDatabase();
   }
 
   @override
@@ -102,7 +103,7 @@ class _CartPageState extends State<CartPage> {
           // go to camera view
           Navigator.push(context,
               //MaterialPageRoute(builder: (context) => const TakeShelfImage()));
-              MaterialPageRoute(builder: (context) => const MapPage()));
+              MaterialPageRoute(builder: (context) => MapPage()));
         },
         child: Icon(
           Icons.my_location,
@@ -139,9 +140,6 @@ class _CartPageState extends State<CartPage> {
                             shelfID: snapshot.data?.docs[index]['shelfID']!,
                             sectionID: snapshot.data?.docs[index]['sectionID']!,
                         );
-                        if(!CartMapData.cmItems.any((citm) => citm.id == item.id)){
-                          CartMapData.cmItems.add(item);
-                        }
                         return UserItemTile(
                           cartItem: item,
                           onDeleting: () {
