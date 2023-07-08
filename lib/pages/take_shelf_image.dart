@@ -107,7 +107,6 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
                           horizontal: paddingVal, vertical: paddingVal * 0.1))),
                   onPressed: () {
                     // _identifyChars(null);
-
                     _takePhoto(scSize.height, scSize.width);
                   },
                   child: Row(
@@ -141,6 +140,7 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
                                   vertical: paddingVal * 0.1))),
                       onPressed: () {
                         _identifyChars(capturedRackImage!);
+
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

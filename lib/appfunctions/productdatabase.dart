@@ -10,6 +10,12 @@ class CartMapData{
   static List<CartItem> cmItems = [];
   static List<CartItem> cItemsatPlace = [];
 
+  static int tempCartLength = 0;
+
+  static int GetCartLength(){
+    return cmItems.length;
+  }
+
   static GetModCartItemNames(){
     String names = "";
     cmItems.forEach((element) {
@@ -58,6 +64,7 @@ Future AddUserCartToServer(List<CartItem> cartItems) async {
 }
 
 Future AddCartItemToCart(CartItem cartItem) async {
+  CartMapData.tempCartLength +=1;
   final cart = await FirebaseFirestore.instance
       .collection("UserCart")
       .doc(AuthService.uid);
@@ -69,6 +76,7 @@ Future AddCartItemToCart(CartItem cartItem) async {
 
 Future DeleteItemFromCart(CartItem item) async {
   CartMapData.cmItems.remove(item);
+  CartMapData.tempCartLength -= 1;
   return await FirebaseFirestore.instance
       .collection("UserCart")
       .doc(AuthService.uid)

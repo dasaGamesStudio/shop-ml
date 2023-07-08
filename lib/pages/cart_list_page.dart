@@ -42,8 +42,12 @@ class _CartPageState extends State<CartPage> {
   }
 
   addToCart(CartItem cartItem) {
-    print("addToCart invoked with item " + cartItem.name!);
-    AddCartItemToCart(cartItem);
+    setState(() {
+      print("addToCart invoked with item " + cartItem.name!);
+      AddCartItemToCart(cartItem);
+
+    });
+
   }
 
   // getItemsInCartFDatabase() async {
@@ -89,6 +93,8 @@ class _CartPageState extends State<CartPage> {
     double borderRadius = refLength * 0.02;
 
     List<String> shopList = ["carrot", "Macaroni", "Cheese", "Cake", "Eggs"];
+
+    print(CartMapData.GetCartLength());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange[500],
@@ -101,9 +107,11 @@ class _CartPageState extends State<CartPage> {
         tooltip: "Show Best Route",
         onPressed: () {
           // go to camera view
-          Navigator.push(context,
-              //MaterialPageRoute(builder: (context) => const TakeShelfImage()));
-              MaterialPageRoute(builder: (context) => MapPage()));
+          if (CartMapData.tempCartLength > 0){
+            Navigator.push(context,
+                //MaterialPageRoute(builder: (context) => const TakeShelfImage()));
+                MaterialPageRoute(builder: (context) => TakeShelfImage()));
+          }
         },
         child: Icon(
           Icons.my_location,
@@ -130,6 +138,7 @@ class _CartPageState extends State<CartPage> {
                       .collection("cartItems")
                       .snapshots(),
                   builder: (context, snapshot) {
+                    CartMapData.tempCartLength = snapshot.data?.docs.length ?? 0;
                     return ListView.builder(
                       itemCount: snapshot.data?.docs.length,
                       itemBuilder: (context, index) {
