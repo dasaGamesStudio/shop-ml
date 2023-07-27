@@ -69,7 +69,6 @@ Future AddCartItemToCart(CartItem cartItem) async {
       .collection("UserCart")
       .doc(AuthService.uid);
   cart.collection("cartItems").add(cartItem.toJson());
-
 }
 
 
@@ -77,8 +76,11 @@ Future AddCartItemToCart(CartItem cartItem) async {
 Future DeleteItemFromCart(CartItem item) async {
   CartMapData.cmItems.remove(item);
   CartMapData.tempCartLength -= 1;
+
+  print("Deleting: ${item.id} from ${AuthService.uid} id");
   return await FirebaseFirestore.instance
       .collection("UserCart")
       .doc(AuthService.uid)
       .collection("cartItems").doc(item.id).delete();
+
 }

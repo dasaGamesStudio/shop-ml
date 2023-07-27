@@ -42,7 +42,7 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
   _identifyChars(XFile img) async {
     //Image.asset("assets/Images/cover.png", width: 500, fit: BoxFit.contain,)
     var postUri =
-        Uri.parse("http://ec2-52-90-15-2.compute-1.amazonaws.com/ocr");
+        Uri.parse("http://ec2-52-90-15-2.compute-1.amazonaws.com/ocr/optimized");
     var request = new http.MultipartRequest("POST", postUri);
     request.files.add(new http.MultipartFile.fromBytes(
         'image', await img.readAsBytes(), filename: "image.jpg", contentType: new MediaType('image','jpeg')));
@@ -52,17 +52,31 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
         var responseData = await response.stream.toBytes();
         var responseToString = String.fromCharCodes(responseData);
         var res = json.decode(responseToString);
+        print('response');
         print(res['content']);
         if(res['content'] == "") {
           setState(() {
             errMsg = "Invalid rack number. Please Re-scan the image";
           });
         } else {
-          // check the number is exists on rack ids
+          // check the number is exists on rack id
+          var positionMap = {"1001":"1a", "1002":"1b","1003":"1c","1004":"1d","1005":"1e","1006":"1f", "2001":"2a", "2002":"2b","2003":"2c","2004":"1d","2005":"2e","2006":"2f", "3001":"3a", "3002":"3b","3003":"3c","3004":"3d","3005":"3e","3006":"3f",  };
+          var rackNo = res['content'].replaceAll(new RegExp(r'[^0-9]'),'');
+
+          String? rack = positionMap[rackNo];
+          print(rack);
+          if(rack == null) {
+            setState(() {
+              errMsg = "Invalid rack number. Please Re-scan the image";
+            });
+            return;
+          }
 
           // pass starting point and other points to drawmap page
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const MapPage()));
+          if(rack != null ) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MapPage(rack: rack)));
+          }
         }
       } else {
         setState(() {
@@ -183,6 +197,37 @@ class _TakeShelfImageState extends State<TakeShelfImage> {
                           ),
                           Text(
                             "Re-take",
+                            style: TextStyle(
+                                color: Colors.white, fontSize: fontSize * 1.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.grey),
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  horizontal: paddingVal,
+                                  vertical: paddingVal * 0.1))),
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => MapPage(rack: '1a')));
+
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Icon(
+                              Icons.home,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "Navigate From Door",
                             style: TextStyle(
                                 color: Colors.white, fontSize: fontSize * 1.5),
                           ),

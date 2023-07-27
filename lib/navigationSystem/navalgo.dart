@@ -18,6 +18,16 @@ class NavSys {
     });
   }
 
+  static updateNodePositions(){
+    PPLaceNodes.forEach((element) {
+      print("Element Node: ${element.id}, target Node: ${TargetNode.id}");
+      if(element.id == TargetNode.id){
+        PPLaceNodes.remove(element);
+      }
+    });
+    print(PPLaceNodes.length);
+  }
+
   static FindPath(WNode startNode,WNode endNode) {
     List<WNode> openSet = [];
     openSet.add(startNode);

@@ -75,7 +75,6 @@ class _CartPageState extends State<CartPage> {
     DeleteItemFromCart(cartItem);
   }
 
-
   @override
   void initState() {
     print("initState");

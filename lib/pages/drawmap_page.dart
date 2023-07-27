@@ -13,7 +13,9 @@ import 'package:markethelper/navigationSystem/waypoint_model.dart';
 import '../services/authservice.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({Key? key}) : super(key: key);
+  MapPage({Key? key, required this.rack}) : super(key: key);
+
+  final String? rack;
 
   @override
   State<MapPage> createState() => _MapPageState();
@@ -21,6 +23,8 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   ui.Image? image;
+
+  var startingNode = null;
 
   loadCartItem() async {
     CartMapData.cmItems.clear();
@@ -39,10 +43,20 @@ class _MapPageState extends State<MapPage> {
       idslist.add(element.shelfID + element.sectionID);
     });
     NavSys.GetProductPlacementNodes(idslist);
-    NavSys.FindPathFromMultiple(NavPoint.w1, NavSys.PPLaceNodes);
+    NavSys.FindPathFromMultiple(startingNode, NavSys.PPLaceNodes);
     CartMapData.GetCartItemsAtNode(NavSys.TargetNode.id);
 
 
+
+  }
+
+
+  removeShoppedItems(){
+    CartMapData.cItemsatPlace.forEach((element) {
+      NavSys.updateNodePositions();
+    });
+
+    //loadCartItem();
   }
 
 
@@ -72,6 +86,22 @@ class _MapPageState extends State<MapPage> {
     double paddingVal = refLength * 0.05;
     double fontSize = refLength * 0.04;
 
+    // switch(widget.rack) {
+    //   case '1a':
+    //     startingNode = NavPoint.w2;
+    //     break;
+    //   case '1b':
+    //     startingNode = NavPoint.w3;
+    //     break;
+    //   default:
+    //     startingNode = NavPoint.w2;
+    // }
+
+    NavPoint.NavPList.forEach((element) {
+      if(element.id == widget.rack){
+        startingNode = element;
+      }
+    });
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -157,7 +187,15 @@ class _MapPageState extends State<MapPage> {
                             padding: MaterialStateProperty.all(
                                 EdgeInsets.all(refLength * 0.04)),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              if(NavSys.PPLaceNodes.length > 0){
+                                removeShoppedItems();
+                                NavSys.FindPathFromMultiple(NavSys.TargetNode, NavSys.PPLaceNodes);
+                                CartMapData.GetCartItemsAtNode(NavSys.TargetNode.id);
+                              }
+                            });
+                          },
                           onLongPress: () {
                             showDialog(
                                 context: context,
